@@ -1,32 +1,32 @@
 import React from "react";
 import "./App.css";
-import { Box, Container, Link, Typography } from "@mui/material";
-import { ProTip } from "./ProTip";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Main } from "./page/main";
+import { GraphPage } from "./page/graph";
+import { TagsPage } from "./page/tags";
+import { NipposPage } from "./page/nippos";
 
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}.
-    </Typography>
-  );
-};
+const router = createBrowserRouter([
+  {
+    path: "/main",
+    element: <Main />,
+  },
+  {
+    path: "/",
+    element: <GraphPage />,
+  },
+  {
+    path: "/tags",
+    element: <TagsPage />,
+  },
+  {
+    path: "/nippos",
+    element: <NipposPage />,
+  },
+]);
 
 export const App = () => {
-  return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Material UI Create React App with styled-components in typescript
-        </Typography>
-        <ProTip />
-        <Copyright />
-      </Box>
-    </Container>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
