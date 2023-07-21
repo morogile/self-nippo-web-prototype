@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/self-nippo-web-prototype/static/css/main.c8c2606f.css",
-    "main.js": "/self-nippo-web-prototype/static/js/main.865064e4.js",
+    "main.js": "/self-nippo-web-prototype/static/js/main.782ffa6f.js",
     "static/js/787.6ee8d121.chunk.js": "/self-nippo-web-prototype/static/js/787.6ee8d121.chunk.js",
     "static/media/roboto-latin-500-normal.woff2": "/self-nippo-web-prototype/static/media/roboto-latin-500-normal.f25d774ecfe0996f8eb5.woff2",
     "static/media/roboto-latin-700-normal.woff2": "/self-nippo-web-prototype/static/media/roboto-latin-700-normal.227c93190fe7f82de3f8.woff2",
@@ -61,11 +61,11 @@
     "static/media/roboto-greek-ext-700-normal.woff": "/self-nippo-web-prototype/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/self-nippo-web-prototype/index.html",
     "main.c8c2606f.css.map": "/self-nippo-web-prototype/static/css/main.c8c2606f.css.map",
-    "main.865064e4.js.map": "/self-nippo-web-prototype/static/js/main.865064e4.js.map",
+    "main.782ffa6f.js.map": "/self-nippo-web-prototype/static/js/main.782ffa6f.js.map",
     "787.6ee8d121.chunk.js.map": "/self-nippo-web-prototype/static/js/787.6ee8d121.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c8c2606f.css",
-    "static/js/main.865064e4.js"
+    "static/js/main.782ffa6f.js"
   ]
 }
