@@ -1,7 +1,8 @@
-import { Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React, { useState } from "react";
 import { Cell, Legend, Pie, PieChart } from "recharts";
+import { DrawerComponent } from "../component / drawer";
 import { getAllTag, getNippoCollection, getTagTimeTotal } from "../event/get";
 
 type GraphData = { name: string; id: number; value: number }[];
@@ -63,52 +64,57 @@ export const GraphPage = () => {
 
   const nippos = getNippoCollection(numberOfDay);
   return (
-    <Container maxWidth="sm" sx={{ my: 4 }}>
-      <PieChart width={400} height={300}>
-        <Legend verticalAlign="top" height={36} />
-        <Pie
-          dataKey={"value"}
-          data={data}
-          cx={"50%"}
-          cy="50%"
-          outerRadius={80}
-          labelLine={false}
-          label={renderCustomizedLabel}
-        >
-          {data.map((entry, key) => (
-            <Cell key={`cell-${key}`} fill={getCellColor(entry.id)} />
-          ))}
-        </Pie>
-      </PieChart>
-      <Stack direction={"column"} spacing={3}>
-        {nippos.map((nippo, key) => (
-          <Stack direction={"column"} spacing={1} key={key}>
-            <Typography>{`${
-              nippo.date.month() + 1
-            }月${nippo.date.date()}日`}</Typography>
-            {nippo.activities.map((activity, key) => (
-              <Stack
-                direction={"row"}
-                spacing={1}
-                justifyContent={"space-between"}
-                key={key}
-              >
-                <Typography width={200}>{activity.title}</Typography>
-                <Typography width={60}>{`${activity.startTime.format(
-                  "HH:mm"
-                )}`}</Typography>
-                <Typography width={30}>{"〜"}</Typography>
-                <Typography width={60}>{`${activity.endTime.format(
-                  "HH:mm"
-                )}`}</Typography>
-                <Typography color={getCellColor(activity.tag.id)}>
-                  {activity.tag.title}
-                </Typography>
-              </Stack>
+    <>
+      <DrawerComponent />
+      <Stack
+        maxWidth="sm"
+        sx={{ my: 10 }}
+        direction={"column"}
+        alignItems={"center"}
+        margin={"0 auto"}
+      >
+        <PieChart width={400} height={300}>
+          <Legend verticalAlign="top" height={36} />
+          <Pie
+            dataKey={"value"}
+            data={data}
+            cx={"50%"}
+            cy="50%"
+            outerRadius={80}
+            labelLine={false}
+            label={renderCustomizedLabel}
+          >
+            {data.map((entry, key) => (
+              <Cell key={`cell-${key}`} fill={getCellColor(entry.id)} />
             ))}
-          </Stack>
-        ))}
+          </Pie>
+        </PieChart>
+        <Stack direction={"column"} spacing={3}>
+          {nippos.map((nippo, key) => (
+            <Stack direction={"column"} spacing={1} key={key}>
+              <Typography color={"GrayText"}>{`${
+                nippo.date.month() + 1
+              }月${nippo.date.date()}日`}</Typography>
+              <Divider />
+              {nippo.activities.map((activity, key) => (
+                <Stack direction={"row"} spacing={1} key={key}>
+                  <Typography width={200}>{activity.title}</Typography>
+                  <Typography width={60}>{`${activity.startTime.format(
+                    "HH:mm"
+                  )}`}</Typography>
+                  <Typography width={30}>{"〜"}</Typography>
+                  <Typography width={60}>{`${activity.endTime.format(
+                    "HH:mm"
+                  )}`}</Typography>
+                  <Typography color={getCellColor(activity.tag.id)}>
+                    {activity.tag.title}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+          ))}
+        </Stack>
       </Stack>
-    </Container>
+    </>
   );
 };

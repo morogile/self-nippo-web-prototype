@@ -24,6 +24,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import AddIcon from "@mui/icons-material/Add";
 import { createActivity, createNippo } from "../event/create";
 import { getAllTagPartial } from "../event/get";
+import { DrawerComponent } from "../component / drawer";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_ACTIVITIES_COUNT = 0;
 
@@ -31,6 +33,7 @@ export const NipposPage = () => {
   const [activitiesCount, setActivitiesCount] = useState(
     INITIAL_ACTIVITIES_COUNT
   );
+  const navigate = useNavigate();
   const [activities, setActivities] = useState([] as Activity[]);
   const [date, setDate] = useState<Dayjs | null>(null);
 
@@ -131,7 +134,9 @@ export const NipposPage = () => {
 
   const clickSubmitButton = (e: React.MouseEvent) => {
     e.preventDefault();
-    makeActivitiesArray().then((array) => createNippo(date, array));
+    makeActivitiesArray()
+      .then((array) => createNippo(date, array))
+      .then(() => navigate("/"));
   };
 
   const clickDeleteIcon = (e: React.MouseEvent, index: number) => {
@@ -144,104 +149,107 @@ export const NipposPage = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ my: 4 }}>
-      <Stack direction={"column"} spacing={8} alignItems={"center"}>
-        <Stack direction={"row"} spacing={2} alignItems={"center"}>
-          <Typography variant="h1" sx={{ fontSize: 32 }}>
-            日報作成
-          </Typography>
-          <Box>
-            <DatePicker
-              value={date}
-              onChange={(newValue) => setDate(newValue)}
-            />
-          </Box>
-        </Stack>
-        <Card>
-          <CardContent>
-            <Stack spacing={2} alignItems={"center"}>
-              {activities.map((activity, key) => (
-                <Card variant="outlined" key={key}>
-                  <CardContent>
-                    <EventRow>
-                      <EventTagContainer>
-                        <TextField
-                          id="outlined-basic"
-                          label="イベント"
-                          variant="outlined"
-                          value={activity.title}
-                          onChange={(event) => changeTitle(event, key)}
-                        />
-                        <Select
-                          label="タグ"
-                          value={activity.tag.id}
-                          onChange={(event) => changeTag(event, key)}
-                          sx={{ width: 180 }}
+    <>
+      <DrawerComponent />
+      <Container maxWidth="md" sx={{ my: 10 }}>
+        <Stack direction={"column"} spacing={8} alignItems={"center"}>
+          <Stack direction={"row"} spacing={2} alignItems={"center"}>
+            <Typography variant="h1" sx={{ fontSize: 32 }}>
+              日報作成
+            </Typography>
+            <Box>
+              <DatePicker
+                value={date}
+                onChange={(newValue) => setDate(newValue)}
+              />
+            </Box>
+          </Stack>
+          <Card>
+            <CardContent>
+              <Stack spacing={2} alignItems={"center"}>
+                {activities.map((activity, key) => (
+                  <Card variant="outlined" key={key}>
+                    <CardContent>
+                      <EventRow>
+                        <EventTagContainer>
+                          <TextField
+                            id="outlined-basic"
+                            label="イベント"
+                            variant="outlined"
+                            value={activity.title}
+                            onChange={(event) => changeTitle(event, key)}
+                          />
+                          <Select
+                            label="タグ"
+                            value={activity.tag.id}
+                            onChange={(event) => changeTag(event, key)}
+                            sx={{ width: 180 }}
+                          >
+                            {tagAll.map((tag, key) => (
+                              <MenuItem value={tag.id} key={key}>
+                                {tag.title}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </EventTagContainer>
+                        <TimesContainer>
+                          <TimeContainer>
+                            <TimePicker
+                              label="開始時刻"
+                              value={activity.startTime}
+                              onChange={(newValue) =>
+                                changeStartTime(newValue, key)
+                              }
+                            />
+                          </TimeContainer>
+                          <Typography>〜</Typography>
+                          <TimeContainer>
+                            <TimePicker
+                              label="終了時刻"
+                              value={activity.endTime}
+                              onChange={(newValue) =>
+                                changeEndTime(newValue, key)
+                              }
+                            />
+                          </TimeContainer>
+                        </TimesContainer>
+                        <IconButton
+                          aria-label="delete"
+                          style={{ color: "gray" }}
+                          onClick={(e) => clickDeleteIcon(e, key)}
                         >
-                          {tagAll.map((tag, key) => (
-                            <MenuItem value={tag.id} key={key}>
-                              {tag.title}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </EventTagContainer>
-                      <TimesContainer>
-                        <TimeContainer>
-                          <TimePicker
-                            label="開始時刻"
-                            value={activity.startTime}
-                            onChange={(newValue) =>
-                              changeStartTime(newValue, key)
-                            }
-                          />
-                        </TimeContainer>
-                        <Typography>〜</Typography>
-                        <TimeContainer>
-                          <TimePicker
-                            label="終了時刻"
-                            value={activity.endTime}
-                            onChange={(newValue) =>
-                              changeEndTime(newValue, key)
-                            }
-                          />
-                        </TimeContainer>
-                      </TimesContainer>
-                      <IconButton
-                        aria-label="delete"
-                        style={{ color: "gray" }}
-                        onClick={(e) => clickDeleteIcon(e, key)}
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    </EventRow>
-                  </CardContent>
-                </Card>
-              ))}
-              <Box>
-                <Button
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  onClick={clickAddPartButton}
-                >
-                  イベントの追加
-                </Button>
-              </Box>
-            </Stack>
-          </CardContent>
-        </Card>
-        <Container maxWidth="xs">
-          <Button
-            variant="contained"
-            onClick={clickSubmitButton}
-            size="large"
-            sx={{ width: "100%" }}
-          >
-            日報の提出
-          </Button>
-        </Container>
-      </Stack>
-      <List></List>
-    </Container>
+                          <ClearIcon />
+                        </IconButton>
+                      </EventRow>
+                    </CardContent>
+                  </Card>
+                ))}
+                <Box>
+                  <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={clickAddPartButton}
+                  >
+                    イベントの追加
+                  </Button>
+                </Box>
+              </Stack>
+            </CardContent>
+          </Card>
+          <Container maxWidth="xs">
+            <Button
+              variant="contained"
+              onClick={clickSubmitButton}
+              size="large"
+              sx={{ width: "100%" }}
+            >
+              日報の提出
+            </Button>
+          </Container>
+        </Stack>
+        <List></List>
+      </Container>
+    </>
   );
 };
 
